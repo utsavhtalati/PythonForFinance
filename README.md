@@ -1,2 +1,8 @@
 # PythonForFinance
-This repository is dedicated to demonstrating the use of Python in financial analysis and investment management. It includes a variety of scripts, notebooks, and modules that showcase how Python can be used for financial data analysis, algorithmic trading, portfolio optimization, risk management, and more.
+This repository is dedicated to dive into concrete examples from quantitative finance to illustrate how convenient and powerful it is to use Python and its libraries for financial analytics. 
+
+Implied volatilities
+
+Monte Carlo simulation
+
+Technical analysis
