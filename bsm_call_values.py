@@ -1,7 +1,5 @@
 # 
 # Valulation of European call options in Black-Scholes-Merton model
-# incl. Vega function and implied volatility estimation.
-# bsm_functions.py
 #
 
 def bsm_call_value(S0, K, T, r, sigma):
