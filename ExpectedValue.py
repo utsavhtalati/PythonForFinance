@@ -1,15 +1,10 @@
-import requests 
+import requests
 
 KEY = ''
-
-SPORT = 'americanfootball_nfl'
-
+SPORT = 'soccer_fa_cup'
 REGIONS = 'us'
-
 MARKETS = 'h2h'
-
-ODDS_FORM = 'american'
-
+ODDS_FORM = 'decimal'
 DATE_FORM = 'iso'
 
 # Constructing the endpoint URL
@@ -23,11 +18,26 @@ if sports_response.status_code != 200:
 else:
     data = sports_response.json()
     for game in data:
-        print(f"{game['sport_title']}: {game['home_team']} vs {game['away_team']}")
+        best_odds = {}
+        best_bookmakers = {}
+        # Find the best odds for each outcome across all bookmakers
         for bookmaker in game['bookmakers']:
-            if bookmaker['key'] in ['fanduel', 'draftkings']:
-                print(f"  Bookmaker: {bookmaker['title']}")
-                for market in bookmaker['markets']:
-                    if market['key'] == 'h2h':
-                        for outcome in market['outcomes']:
-                            print(f" {outcome['name']}: {outcome['price']}")
+            for market in bookmaker['markets']:
+                if market['key'] == 'h2h':
+                    for outcome in market['outcomes']:
+                        if outcome['name'] not in best_odds or best_odds[outcome['name']] < outcome['price']:
+                            best_odds[outcome['name']] = outcome['price']
+                            best_bookmakers[outcome['name']] = bookmaker['title']
+
+        # Calculate and sum the implied probabilities for these best odds
+        total_probability = sum(1 / price for price in best_odds.values())
+
+        # Print only if total probability is less than 1
+                # Print only if total probability is less than 1
+        if total_probability < 1.2:
+            print(f"{game['sport_title']}: {game['home_team']} vs {game['away_team']}")
+            print("Opportunity:")
+            for outcome, price in best_odds.items():
+                print(f"    Bet on {outcome} at {best_bookmakers[outcome]} with odds {price}")
+            print(f"  Total Implied Probability: {total_probability}")
+
